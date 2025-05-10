@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import Session
+from pgvector.sqlalchemy import Vector
 
 # Tworzymy bazową klasę dla modeli SQLAlchemy
 Base = declarative_base()
@@ -17,7 +18,7 @@ class Img(Base):
     # Kolumny w tabeli
     id: Mapped[int] = mapped_column(primary_key=True)  # Kolumna z identyfikatorem obrazu
     image_path: Mapped[str] = mapped_column(String)  # Kolumna z ścieżką do obrazu
-    embedding: Mapped[bytearray] = mapped_column(String)  # Kolumna na osadzenie obrazu w postaci wektora
+    embedding: Mapped[list[float]] = mapped_column(Vector(VECTOR_LENGTH))  # Kolumna na osadzenie obrazu w postaci wektora
 
 # Tworzymy połączenie z bazą danych PostgreSQL
 db_url = URL.create(
